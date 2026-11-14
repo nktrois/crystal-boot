@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Animation de démarrage en cristal ASCII avec le texte de ton choix, à télécharger en GIF ou en vidéo.">
+  <title>Crystal Boot</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css?v=0.3.0">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./">Crystal Boot</a>
+    <span class="tagline">Animation de démarrage en cristal ASCII</span>
+    <a class="source" href="https://github.com/nktrois/crystal-boot" target="_blank" rel="noopener noreferrer">Code source</a>
+  </header>
+
+  <div class="layout">
+    <aside class="panel" aria-label="Réglages">
+      <section class="step">
+        <h2><span class="n">1</span> Texte</h2>
+        <label for="text">Dans le cristal (2 lignes si besoin)</label>
+        <input id="text" maxlength="24" autocomplete="off" spellcheck="false">
+        <p class="hint">Lettres, chiffres et - . ! ? ' : / &amp; +</p>
+        <div class="checks">
+          <label><input type="checkbox" id="hl" checked> Signature HL en bas</label>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">2</span> Style</h2>
+        <label for="palette">Couleurs</label>
+        <select id="palette">
+          <option value="synthwave">Synthwave</option>
+          <option value="amber">Ambre</option>
+          <option value="terminal">Terminal vert</option>
+          <option value="ice">Glace</option>
+        </select>
+        <label for="ending">Fin de l'animation</label>
+        <select id="ending">
+          <option value="pass">Traversée du cristal</option>
+          <option value="hold">Arrêt sur le texte</option>
+        </select>
+        <div class="checks">
+          <label><input type="checkbox" id="sun" checked> Soleil</label>
+          <label><input type="checkbox" id="grid" checked> Grille</label>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">3</span> Format</h2>
+        <label for="size">Écran</label>
+        <select id="size">
+          <optgroup label="Microcontrôleur (ESP32…)">
+            <option value="128x128">128 × 128 · OLED SSD1351</option>
+            <option value="160x128">160 × 128 · TFT ST7735</option>
+            <option value="240x240">240 × 240 · TFT ST7789</option>
+            <option value="320x240">320 × 240 · TFT ILI9341</option>
+            <option value="480x320">480 × 320 · TFT ILI9488</option>
+          </optgroup>
+          <optgroup label="Ordinateur, Raspberry Pi">
+            <option value="800x480">800 × 480 · écran Raspberry Pi</option>
+            <option value="1280x720" selected>1280 × 720 · HD</option>
+            <option value="1920x1080">1920 × 1080 · Full HD</option>
+            <option value="1080x1920">1080 × 1920 · vertical</option>
+          </optgroup>
+          <option value="custom">Autre taille…</option>
+        </select>
+        <div class="row two hidden" id="customSize">
+          <div><label for="customW">Largeur</label><input id="customW" type="number" min="64" max="3840" step="1" value="240"></div>
+          <div><label for="customH">Hauteur</label><input id="customH" type="number" min="64" max="3840" step="1" value="135"></div>
+        </div>
+        <div class="row two">
+          <div><label for="duration">Durée (s)</label><input id="duration" type="number" min="2" max="20" step="0.5"></div>
+          <div>
+            <label for="fps">Images/s</label>
+            <select id="fps"><option>10</option><option>15</option><option selected>20</option><option>25</option><option>30</option></select>
+          </div>
+        </div>
+        <label for="colors">Couleurs (fichier plus léger si moins)</label>
+        <select id="colors"><option value="256">256</option><option value="64">64</option><option value="32">32</option><option value="16">16</option></select>
+        <div class="checks">
+          <label><input type="checkbox" id="loop" checked> Lecture en boucle</label>
+        </div>
+      </section>
+
+      <section class="step">
+        <h2><span class="n">4</span> Télécharger</h2>
+        <button id="gifBtn" type="button" class="wide">GIF</button>
+        <button id="headerBtn" type="button" class="wide secondary">ESP32 / Arduino (.h)</button>
+        <button id="videoBtn" type="button" class="wide secondary">Vidéo</button>
+        <p class="hint">Le fichier .h s'inclut dans un firmware : voir l'exemple <code>examples/esp32-display</code>.</p>
+        <div class="progress" id="progress" hidden><div id="progressBar"></div></div>
+        <p class="hint" id="status"></p>
+      </section>
+
+      <button id="copyLink" type="button" class="link">Copier le lien de ces réglages</button>
+    </aside>
+
+    <main class="main">
+      <div class="stage" id="stage">
+        <canvas id="preview" aria-label="Aperçu de l'animation"></canvas>
+      </div>
+      <div class="bar">
+        <button id="replay" type="button" class="secondary">Rejouer</button>
+        <button id="fullscreen" type="button" class="secondary">Plein écran</button>
+        <span class="muted" id="info"></span>
+      </div>
+    </main>
+  </div>
+
+  <script src="font.js?v=0.1.0"></script>
+  <script src="crystal.js?v=0.3.0"></script>
+  <script src="vendor/gifenc.js?v=1.0.3"></script>
+  <script src="export.js?v=0.3.0"></script>
+  <script src="app.js?v=0.3.0"></script>
+</body>
+</html>
